@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ObjectAdapter<T> extends BaseAdapter {
@@ -17,7 +18,7 @@ public abstract class ObjectAdapter<T> extends BaseAdapter {
 	}
 
 	public ObjectAdapter(List<T> data, Context context, int view) {
-		mData = data;
+		mData = data == null ? new ArrayList<T>() : data;
 		mContext = context;
 		mView = view;
 	}
@@ -58,7 +59,7 @@ public abstract class ObjectAdapter<T> extends BaseAdapter {
 	}
 
 	public void setData(List<T> data) {
-		mData = data;
+		mData = data == null ? new ArrayList<T>() : data;
 		notifyDataSetChanged();
 	}
 

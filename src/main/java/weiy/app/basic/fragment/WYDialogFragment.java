@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -16,17 +18,30 @@ public abstract class WYDialogFragment extends DialogFragment implements View.On
 	protected View   mView;
 	protected Bundle mBundle;
 	private   int    mContentView;
+	private   int    mMenuRes;
 
 	public WYDialogFragment(int contentView) {
 		mContentView = contentView;
 	}
 
+	public WYDialogFragment(int contentView, int menuRes) {
+		mContentView = contentView;
+		mMenuRes = menuRes;
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(mContentView, container, false);
+		mBundle = getArguments() == null ? new Bundle() : getArguments();
 		findViews();
 		doCreateView();
 		return mView;
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		if (mMenuRes != 0) inflater.inflate(mMenuRes, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 	}
 
 	@Override

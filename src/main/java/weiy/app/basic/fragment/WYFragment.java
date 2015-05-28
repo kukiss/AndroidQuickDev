@@ -38,19 +38,16 @@ public abstract class WYFragment extends Fragment implements OnClickListener {
 	}
 
 	public WYFragment(int view, String title) {
-
 		mContentView = view;
 		mTitle = title;
 	}
 
 	public WYFragment(int view, int menuView) {
-
 		mContentView = view;
 		mMenuItem = menuView;
 	}
 
 	public WYFragment(int view, int menuItem, String title) {
-
 		mContentView = view;
 		mMenuItem = menuItem;
 		mTitle = title;
@@ -58,7 +55,6 @@ public abstract class WYFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		mActivity = getActivity();
@@ -71,7 +67,7 @@ public abstract class WYFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(mContentView, container, false);
 		findViews();
-		doCreateView(mView);
+		doCreateView();
 		return mView;
 	}
 
@@ -107,7 +103,7 @@ public abstract class WYFragment extends Fragment implements OnClickListener {
 		return false;
 	}
 
-	protected abstract void doCreateView(View view);
+	protected abstract void doCreateView();
 
 	protected void doCreate() {}
 
