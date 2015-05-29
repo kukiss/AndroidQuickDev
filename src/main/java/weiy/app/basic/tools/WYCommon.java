@@ -282,4 +282,9 @@ public class WYCommon {
 		}
 		return version;
 	}
+
+	public static String getTime(long mills, String format) {
+		return new SimpleDateFormat(format).format(new Date(mills));
+	}
+
 }
