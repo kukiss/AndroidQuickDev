@@ -35,9 +35,9 @@ public class WYHelp {
 		for (int i = 0, count = str.length(); i < count; i++) {
 			int chr = str.charAt(i);
 			if (i == 0) {
-				if (chr == 46) {
-					docNum++;
-				} else if ((chr < 48 && chr != 45) || chr > 57) return false;
+				if (chr == 46 || chr == 45) {
+					return false;
+				} else if (chr < 48 || chr > 57) return false;
 			} else if (chr == 46) {
 				docNum++;
 				if (docNum > 1) return false;
