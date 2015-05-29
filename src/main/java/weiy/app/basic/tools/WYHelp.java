@@ -1,7 +1,7 @@
 package weiy.app.basic.tools;
 
 /** Created by kukiss on 2015/1/2 0002. */
-public class Java {
+public class WYHelp {
 
 	/** 控制替换默认值 */
 	public static <T> T t(T t, T defValue) {
