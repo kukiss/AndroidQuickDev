@@ -16,23 +16,39 @@ public class Java {
 	}
 
 	public static boolean isInt(String str) {
-
-		try {
-			Integer.parseInt(str);
-			return true;
-		} catch (Exception e) {
-			return false;
+		for (int i = 0, count = str.length(); i < count; i++) {
+			int chr = str.charAt(i);
+			if (i == 0) {
+				if ((chr < 48 && chr != 45) || chr > 57) return false;
+			} else if (chr < 48 || chr > 57) return false;
 		}
+		return true;
+	}
+
+	public static int parseInt(String str, int def) {
+		if (isInt(str)) return Integer.parseInt(str);
+		else return def;
 	}
 
 	public static boolean isFloat(String str) {
-
-		try {
-			Float.parseFloat(str);
-			return true;
-		} catch (Exception e) {
-			return false;
+		int docNum = 0;
+		for (int i = 0, count = str.length(); i < count; i++) {
+			int chr = str.charAt(i);
+			if (i == 0) {
+				if (chr == 46) {
+					docNum++;
+				} else if ((chr < 48 && chr != 45) || chr > 57) return false;
+			} else if (chr == 46) {
+				docNum++;
+				if (docNum > 1) return false;
+			} else if (chr < 48 || chr > 57) return false;
 		}
+		return true;
+	}
+
+	public static float parseFloat(String str, float def) {
+		if (isFloat(str)) return Float.parseFloat(str);
+		else return def;
 	}
 
 	/*

@@ -1,6 +1,5 @@
 package weiy.app.basic.fragment;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,14 +20,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public abstract class WYFragment extends Fragment implements OnClickListener {
+public abstract class WYFragment<T> extends Fragment implements OnClickListener {
 
 	protected Handler           mHandler;
 	protected View              mView;
-	protected Activity          mActivity;
 	protected Bundle            mBundle;
 	protected String            mTitle;
 	protected Resources         mRes;
+	protected T                 mAty;
 	private   int               mContentView;
 	private   int               mMenuItem;
 	private   BroadcastReceiver mReceiver;
@@ -57,7 +56,7 @@ public abstract class WYFragment extends Fragment implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		mActivity = getActivity();
+		mAty = (T) getActivity();
 		mRes = getActivity().getApplicationContext().getResources();
 		mBundle = getArguments() == null ? new Bundle() : getArguments();
 		doCreate();
@@ -75,7 +74,7 @@ public abstract class WYFragment extends Fragment implements OnClickListener {
 	public void onResume() {
 		super.onResume();
 		if (mTitle != null && !mTitle.equals("")) {
-			mActivity.setTitle(mTitle);
+			getActivity().setTitle(mTitle);
 		}
 	}
 
