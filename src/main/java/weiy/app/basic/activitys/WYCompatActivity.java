@@ -84,9 +84,7 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 	}
 
 	@Override
-	public void onClick(View v) {
-
-	}
+	public void onClick(View v) {}
 
 	/** 注册广播接受器 */
 	protected void regReceiver() {
@@ -95,36 +93,28 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 		mReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-
 				doReceive(intent);
 			}
 		};
 		registerReceiver(mReceiver, filter);
 	}
 
-	protected void addRecAction(IntentFilter filter) {
+	protected void addRecAction(IntentFilter filter) {}
 
-	}
-
-	protected void doReceive(Intent intent) {
-
-	}
+	protected void doReceive(Intent intent) {}
 
 	/** 增加一个handler */
 	protected void addHandler() {
 		mHandler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-
 				super.handleMessage(msg);
 				if (!isFinishing()) doHandle(msg);
 			}
 		};
 	}
 
-	protected void doHandle(Message msg) {
-
-	}
+	protected void doHandle(Message msg) {}
 
 	protected void showToast(String msg) {
 		Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
