@@ -42,44 +42,6 @@ public class WYFrag {
 		}
 	}
 
-	/** 替换一个容器中的Fragment, 设置是否加入回退栈和tag. */
-	public static void replceFragment(FragmentManager manager, int container, Fragment fragment, boolean ifBack, String tag, HashMap<String, Object> params) {
-		FragmentTransaction t = manager.beginTransaction();
-		if (params != null && !params.isEmpty()) {
-			Bundle bundle = new Bundle();
-			bundle.putSerializable("params", params);
-			fragment.setArguments(bundle);
-		}
-		if (tag != null) {
-			t.replace(container, fragment, tag);
-		} else {
-			t.replace(container, fragment);
-		}
-		if (ifBack) {
-			t.addToBackStack(null);
-		}
-		t.commit();
-	}
-
-//	/** 替换一个容器中的v4.Fragment, 设置是否加入回退栈和tag. */
-//	public static void replceFragment(android.support.v4.app.FragmentManager manager, int container, android.support.v4.app.Fragment fragment, boolean ifBack, String tag, HashMap<String, Object> params) {
-//		android.support.v4.app.FragmentTransaction t = manager.beginTransaction();
-//		if (params != null && !params.isEmpty()) {
-//			Bundle bundle = new Bundle();
-//			bundle.putSerializable("params", params);
-//			fragment.setArguments(bundle);
-//		}
-//		if (tag != null) {
-//			t.replace(container, fragment, tag);
-//		} else {
-//			t.replace(container, fragment);
-//		}
-//		if (ifBack) {
-//			t.addToBackStack(tag);
-//		}
-//		t.commit();
-//	}
-
 	/** 替换一个容器中的v4.Fragment, 设置是否加入回退栈 */
 	public static void replceFragment(android.support.v4.app.FragmentManager manager, int container, android.support.v4.app.Fragment fragment, String tag, Bundle params) {
 		android.support.v4.app.FragmentTransaction t = manager.beginTransaction();

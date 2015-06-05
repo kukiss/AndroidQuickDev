@@ -3,19 +3,9 @@ package weiy.app.basic.tools;
 /** Created by kukiss on 2015/1/2 0002. */
 public class WYHelp {
 
-	/** 控制替换默认值 */
-	public static <T> T t(T t, T defValue) {
-
-		return t == null ? defValue : t;
-	}
-
-	/** 替换字符串, null替换为空字符串 */
-	public static String s(String str, String tar, String replace) {
-
-		return str == null ? "" : str.equals(tar) ? replace : str;
-	}
-
 	public static boolean isInt(String str) {
+		if (str == null || "".equals(str)) return false;
+
 		for (int i = 0, count = str.length(); i < count; i++) {
 			int chr = str.charAt(i);
 			if (i == 0) {
@@ -31,6 +21,8 @@ public class WYHelp {
 	}
 
 	public static boolean isFloat(String str) {
+		if (str == null || "".equals(str)) return false;
+
 		int docNum = 0;
 		for (int i = 0, count = str.length(); i < count; i++) {
 			int chr = str.charAt(i);
