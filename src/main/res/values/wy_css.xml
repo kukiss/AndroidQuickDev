@@ -22,4 +22,8 @@
         <item name="android:textColor">@color/blue500</item>
         <item name="android:background">@drawable/wy_btn_flat</item>
     </style>
+
+    <style name="wy_body1">
+
+    </style>
 </resources>

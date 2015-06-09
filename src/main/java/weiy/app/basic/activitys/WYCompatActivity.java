@@ -42,7 +42,7 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 		setContentView(mContentView);
 		findViews();
 		mRes = getApplicationContext().getResources();
-		doCreate();
+		doCreate(savedInstanceState);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 
 	protected void doFirst() {}
 
-	protected abstract void doCreate();
+	protected abstract void doCreate(Bundle savedInstanceState);
 
 	protected void findViews() {}
 

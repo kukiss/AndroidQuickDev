@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class WYFile {
 
@@ -32,6 +34,10 @@ public class WYFile {
 			}
 		}
 		return file;
+	}
+
+	public static File openFile(File file) {
+		return openFile(file.getAbsolutePath());
 	}
 
 	/** 以文件所在的路劲和文件名打开文件, 不存在就新建文件. */
@@ -83,13 +89,10 @@ public class WYFile {
 	public static boolean isExternalStorageWritable() {
 
 		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			return true;
-		}
-		return false;
+		return Environment.MEDIA_MOUNTED.equals(state);
 	}
 
-	public static final boolean checkExternalStorage(Context context) {
+	public static boolean checkExternalStorage(Context context) {
 
 		if (isExternalStorageWritable()) {
 			return true;
@@ -103,10 +106,7 @@ public class WYFile {
 	public static boolean isExternalStorageReadable() {
 
 		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-			return true;
-		}
-		return false;
+		return Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
 	}
 
 }

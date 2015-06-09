@@ -43,7 +43,7 @@ public class WYFrag {
 	}
 
 	/** 替换一个容器中的v4.Fragment, 设置是否加入回退栈 */
-	public static void replceFragment(android.support.v4.app.FragmentManager manager, int container, android.support.v4.app.Fragment fragment, String tag, Bundle params) {
+	public static void replaceFragment(android.support.v4.app.FragmentManager manager, int container, android.support.v4.app.Fragment fragment, String tag, Bundle params) {
 		android.support.v4.app.FragmentTransaction t = manager.beginTransaction();
 		if (params != null && !params.isEmpty()) {
 			fragment.setArguments(params);
