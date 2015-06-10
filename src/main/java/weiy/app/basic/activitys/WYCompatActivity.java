@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 public abstract class WYCompatActivity extends AppCompatActivity implements OnClickListener {
@@ -41,6 +42,7 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 		doFirst();
 		setContentView(mContentView);
 		findViews();
+		ButterKnife.inject(this);
 		mRes = getApplicationContext().getResources();
 		doCreate(savedInstanceState);
 	}
@@ -60,7 +62,7 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 
 	protected abstract void doCreate(Bundle savedInstanceState);
 
-	protected void findViews() {}
+	@Deprecated protected void findViews() {}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

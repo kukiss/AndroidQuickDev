@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -285,6 +286,22 @@ public class WYCommon {
 
 	public static String getTime(long mills, String format) {
 		return new SimpleDateFormat(format).format(new Date(mills));
+	}
+
+	public static void openUrl(Context context, String url) {
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse(url));
+		context.startActivity(intent);
+	}
+
+	public static void toggleMobileData(Context context, boolean state) {
+		try {
+			ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			Method method = connectivityManager.getClass().getMethod("setMobileDataEnabled", new Class[]{boolean.class});
+			method.invoke(connectivityManager, state);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

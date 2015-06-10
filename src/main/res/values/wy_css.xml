@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<style name="wy_btnGreen">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">48dp</item>
+		<item name="android:minWidth">88dp</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">#FFF</item>
+		<item name="android:padding">8dp</item>
+		<item name="android:background">@drawable/wy_btn_green</item>
+		<item name="android:clickable">true</item>
+		<item name="android:gravity">center</item>
+		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+	</style>
 
-    <style name="wy_btnGreen">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:minWidth">88dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">#FFF</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:background">@drawable/wy_btn_green</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-    </style>
-
-    <style name="wy_btnFlat">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/blue500</item>
-        <item name="android:background">@drawable/wy_btn_flat</item>
-    </style>
-
-    <style name="wy_body1">
-
-    </style>
+	<style name="wy_btnFlat">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">48dp</item>
+		<item name="android:padding">8dp</item>
+		<item name="android:gravity">center</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">@color/blue500</item>
+		<item name="android:background">@drawable/wy_btn_flat</item>
+		<item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+	</style>
 </resources>

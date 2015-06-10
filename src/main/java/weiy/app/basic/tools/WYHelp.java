@@ -57,4 +57,8 @@ public class WYHelp {
 		return str;
 	}
 	*/
+
+	public static String getOrEmpty(String str) {
+		return str == null ? "" : str;
+	}
 }
