@@ -1,4 +1,4 @@
-package weiy.app.basic.fragment;
+package weiy.app.basic.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 /** Created by kukiss on 2015/1/23 0023. */
@@ -34,6 +35,7 @@ public abstract class WYDialogFragment extends DialogFragment implements View.On
 		mView = inflater.inflate(mContentView, container, false);
 		mBundle = getArguments() == null ? new Bundle() : getArguments();
 		findViews();
+		ButterKnife.inject(this, mView);
 		doCreateView();
 		return mView;
 	}
@@ -65,7 +67,7 @@ public abstract class WYDialogFragment extends DialogFragment implements View.On
 
 	protected void doCreateView() {}
 
-	protected void findViews() {}
+	@Deprecated protected void findViews() {}
 
 	protected void showToast(String msg) {
 		Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();

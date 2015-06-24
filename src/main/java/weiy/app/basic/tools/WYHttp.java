@@ -27,6 +27,7 @@ import java.util.Map;
 
 public class WYHttp {
 
+	@Deprecated
 	public static String send(String path, Map<String, String> params, Map<String, String> files) {
 
 		if (files == null) {
@@ -141,7 +142,7 @@ public class WYHttp {
 		Bitmap bmp = null;
 		try {
 			URL imgUrl = new URL(url);
-			bmp = WYBitmap.decodeSampledBitmapFromStream(imgUrl.openStream(), width, height);
+			bmp = WYBitmap.decodeSampledBitmapFromUrl(imgUrl, width, height);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

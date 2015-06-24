@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="WYAction">
+		<attr name="wy_action_title" format="string"/>
+		<attr name="wy_action_title_color" format="color"/>
+		<attr name="wy_action_left_visible" format="boolean"/>
+	</declare-styleable>
+</resources>

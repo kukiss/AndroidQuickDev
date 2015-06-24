@@ -1,4 +1,4 @@
-package weiy.app.basic.fragment;
+package weiy.app.basic.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +20,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import butterknife.ButterKnife;
+
 public abstract class WYFragment<T> extends Fragment implements OnClickListener {
 
 	protected Handler           mHandler;
@@ -27,6 +29,7 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 	protected Bundle            mBundle;
 	protected String            mTitle;
 	protected Resources         mRes;
+	protected boolean           mCreated;
 	protected T                 mAty;
 	private   int               mContentView;
 	private   int               mMenuItem;
@@ -66,8 +69,15 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(mContentView, container, false);
 		findViews();
+		ButterKnife.inject(this, mView);
 		doCreateView();
 		return mView;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		mCreated = true;
 	}
 
 	@Override
@@ -102,30 +112,33 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 		return false;
 	}
 
-	protected abstract void doCreateView();
+	protected void doCreateView() {}
 
 	protected void doCreate() {}
 
+	@Deprecated
 	protected void findViews() {}
 
 	@Override
 	public void onClick(View v) {}
 
+	@Deprecated
 	protected void regReceiver() {
 		IntentFilter filter = new IntentFilter();
 		addRecAction(filter);
 		mReceiver = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context context, Intent intent) {
-
 				doReceive(intent);
 			}
 		};
 		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, filter);
 	}
 
+	@Deprecated
 	protected void addRecAction(IntentFilter filter) {}
 
+	@Deprecated
 	protected void doReceive(Intent intent) {}
 
 	/** 增加一个内部handler类 */
@@ -133,8 +146,7 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 		mHandler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				doHandle(msg);
+				if (!isDetached()) doHandle(msg);
 			}
 		};
 	}

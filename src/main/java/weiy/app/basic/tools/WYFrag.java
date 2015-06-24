@@ -6,7 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import java.util.HashMap;
+import weiy.app.basic.R;
 
 public class WYFrag {
 
@@ -26,9 +26,15 @@ public class WYFrag {
 		}
 	}
 
-	/** 显示一个v4.DialogFragment, 会预先删除已显示得到DialogFragment. */
+	/** 显示一个v4.DialogFragment, 会预先删除已显示的DialogFragment. */
 	public static void showDialog(android.support.v4.app.FragmentManager manager, android.support.v4.app.DialogFragment fragment) {
 		dismissDialog(manager);
+		fragment.show(manager, "dialog");
+	}
+
+	/** 显示一个v4.DialogFragment, 选择是否删除已显示的DialogFragment. */
+	public static void showDialog(android.support.v4.app.FragmentManager manager, android.support.v4.app.DialogFragment fragment, boolean dismissLast) {
+		if (dismissLast) dismissDialog(manager);
 		fragment.show(manager, "dialog");
 	}
 
@@ -45,6 +51,32 @@ public class WYFrag {
 	/** 替换一个容器中的v4.Fragment, 设置是否加入回退栈 */
 	public static void replaceFragment(android.support.v4.app.FragmentManager manager, int container, android.support.v4.app.Fragment fragment, String tag, Bundle params) {
 		android.support.v4.app.FragmentTransaction t = manager.beginTransaction();
+//		t.setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		t.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
+		if (params != null && !params.isEmpty()) {
+			fragment.setArguments(params);
+		}
+		if (tag != null) {
+			t.replace(container, fragment, tag);
+		} else {
+			t.replace(container, fragment);
+		}
+		if (tag != null) {
+			t.addToBackStack(tag);
+		}
+		t.commit();
+	}
+
+	/** 替换一个容器中的v4.Fragment, 设置是否加入回退栈 */
+	public static void replaceFragment(android.support.v4.app.FragmentManager manager, int container, android.support.v4.app.Fragment fragment, String tag) {
+		replaceFragment(manager, container, fragment, tag, null);
+	}
+
+	/** 替换一个容器中的Fragment, 设置是否加入回退栈 */
+	public static void replaceFragment(FragmentManager manager, int container, Fragment fragment, String tag, Bundle params) {
+		FragmentTransaction t = manager.beginTransaction();
+//		t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+		t.setCustomAnimations(R.animator.slide_in_left, R.animator.slide_out_right);
 		if (params != null && !params.isEmpty()) {
 			fragment.setArguments(params);
 		}

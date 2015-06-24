@@ -61,4 +61,12 @@ public class WYHelp {
 	public static String getOrEmpty(String str) {
 		return str == null ? "" : str;
 	}
+
+	public static void sleep(long mills) {
+		try {
+			Thread.sleep(mills);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

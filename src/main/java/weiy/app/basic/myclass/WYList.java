@@ -9,4 +9,8 @@ public class WYList<E> extends ArrayList<E> {
 		if (index >= size()) return null;
 		else return super.get(index);
 	}
+
+	public void addNoNull(E obj) {
+		if (obj != null) add(obj);
+	}
 }

@@ -122,15 +122,6 @@ public class WYBitmap {
 		return BitmapFactory.decodeFile(path, options);
 	}
 
-	public static Bitmap decodeSampledBitmapFromStream(InputStream stream, int reqWidth, int reqHeight) {
-		BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		BitmapFactory.decodeStream(stream, null, options);
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-		options.inJustDecodeBounds = false;
-		return BitmapFactory.decodeStream(stream, null, options);
-	}
-
 	public static Bitmap decodeSampledBitmapFromUrl(URL url, int reqWidth, int reqHeight) throws Exception {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;

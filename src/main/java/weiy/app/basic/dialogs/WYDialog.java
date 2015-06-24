@@ -13,6 +13,8 @@ import android.support.v7.app.AlertDialog;
  */
 public class WYDialog extends DialogFragment {
 
+	private AlertDialog dialog;
+
 	private String          title;
 	private String          msg;
 	private String          positionBtn;
@@ -68,7 +70,7 @@ public class WYDialog extends DialogFragment {
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		final AlertDialog   dialog  = builder.create();
+		dialog = builder.create();
 
 		// 根据参数设置dialog
 		dialog.setTitle(title);

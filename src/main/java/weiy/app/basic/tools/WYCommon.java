@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -31,6 +32,7 @@ import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -170,7 +172,10 @@ public class WYCommon {
 		}
 	}
 
-	/** 返回当前时间 */
+	/**
+	 * help of time
+	 * 返回当前时间
+	 */
 	public static String getNowTime() {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 	}
@@ -178,6 +183,36 @@ public class WYCommon {
 	public static String getNowTime(String format) {
 		return new SimpleDateFormat(format).format(new Date());
 	}
+
+	public static String getNowDate() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+	}
+
+	public static String getDate(Date date) {
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
+	}
+
+	public static String getTime(long mills, String format) {
+		return new SimpleDateFormat(format).format(new Date(mills));
+	}
+
+	public static Date subDate(Date date, int day) {
+		return new Date(date.getTime() - day * 24 * 60 * 60 * 1000);
+	}
+
+	public static Date addDate(Date date, int day) {
+		return new Date(date.getTime() + day * 24 * 60 * 60 * 1000);
+	}
+
+	public static Date parseDate(String date) {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 	/** 为ListView添加一个空数据时候的view */
 	public static void setEmptyView(Context context, ListView lv, int viewId) {
@@ -284,10 +319,6 @@ public class WYCommon {
 		return version;
 	}
 
-	public static String getTime(long mills, String format) {
-		return new SimpleDateFormat(format).format(new Date(mills));
-	}
-
 	public static void openUrl(Context context, String url) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(url));
@@ -297,10 +328,30 @@ public class WYCommon {
 	public static void toggleMobileData(Context context, boolean state) {
 		try {
 			ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			Method method = connectivityManager.getClass().getMethod("setMobileDataEnabled", new Class[]{boolean.class});
+			Method method = connectivityManager.getClass().getMethod("setMobileDataEnabled", boolean.class);
 			method.invoke(connectivityManager, state);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	/** find resource id by name */
+	public static int getResId(Context context, String name, String type) {
+		try {
+			return context.getResources().getIdentifier(name, type, context.getPackageName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	/** get refreshed location */
+	public static Location getLastLocation(LocationManager manager) {
+		Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (location != null && Math.abs(location.getTime() - System.currentTimeMillis()) < 20000) {
+			return location;
+		} else {
+			return null;
 		}
 	}
 
