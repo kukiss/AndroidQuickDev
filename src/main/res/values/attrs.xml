@@ -4,5 +4,9 @@
 		<attr name="wy_action_title" format="string"/>
 		<attr name="wy_action_title_color" format="color"/>
 		<attr name="wy_action_left_visible" format="boolean"/>
+		<attr name="wy_action_theme" format="enum">
+			<enum name="light" value="1"/>
+			<enum name="dark" value="2"/>
+		</attr>
 	</declare-styleable>
 </resources>

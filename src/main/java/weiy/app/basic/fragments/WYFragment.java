@@ -18,9 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
+import weiy.app.basic.R;
+import weiy.app.basic.views.WYAction;
 
 public abstract class WYFragment<T> extends Fragment implements OnClickListener {
 
@@ -29,11 +32,13 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 	protected Bundle            mBundle;
 	protected String            mTitle;
 	protected Resources         mRes;
-	protected boolean           mCreated;
+	protected int               createFlag;
 	protected T                 mAty;
 	private   int               mContentView;
 	private   int               mMenuItem;
 	private   BroadcastReceiver mReceiver;
+
+	private boolean isPause;
 
 	public WYFragment(int view) {
 		mContentView = view;
@@ -69,7 +74,20 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(mContentView, container, false);
 		findViews();
+		createFlag++;
 		ButterKnife.inject(this, mView);
+
+		WYAction action = (WYAction) mView.findViewById(R.id.wy_action_bar);
+		if (action != null) {
+			ImageView func = (ImageView) action.findViewById(R.id.back);
+			func.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					getActivity().onBackPressed();
+				}
+			});
+		}
+
 		doCreateView();
 		return mView;
 	}
@@ -77,15 +95,20 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		mCreated = true;
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+		isPause = false;
 		if (mTitle != null && !mTitle.equals("")) {
 			getActivity().setTitle(mTitle);
 		}
+	}
+
+	@Override public void onPause() {
+		super.onPause();
+		isPause = true;
 	}
 
 	@Override
@@ -161,4 +184,11 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 		Log.e("mylog", log);
 	}
 
+	public boolean isCreated() {
+		return createFlag > 1;
+	}
+
+	public boolean isPause() {
+		return isPause;
+	}
 }

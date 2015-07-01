@@ -2,6 +2,7 @@ package weiy.app.basic.tools;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 
@@ -14,27 +15,34 @@ public class WYImageCache {
 	private LruCache<String, Bitmap> mCache;
 	private HashMap<String, String>  mFiles;
 
-	public WYImageCache(String dir) {
+	public WYImageCache() {
+		mFiles = new HashMap<>();
 
+		mCache = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 6)) {
+			@Override
+			protected int sizeOf(String key, Bitmap value) {
+				return value.getRowBytes() * value.getHeight();
+			}
+		};
+	}
+
+	public WYImageCache(String dir) {
 		mCacheDir = dir;
 		mFiles = new HashMap<>();
 
 		mCache = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 6)) {
 			@Override
 			protected int sizeOf(String key, Bitmap value) {
-
 				return value.getRowBytes() * value.getHeight();
 			}
 		};
 	}
 
 	private Bitmap get(String key) {
-
 		return mCache.get(key);
 	}
 
 	public Bitmap loadFromFile(String path, int width, int height) {
-
 		Bitmap bmp = mCache.get(path);
 		if (bmp == null) {
 			bmp = WYBitmap.decodeSampledBitmapFromFile(path, width, height);
@@ -44,14 +52,12 @@ public class WYImageCache {
 	}
 
 	private void put(String key, Bitmap bitmap) {
-
 		if (bitmap != null) {
 			mCache.put(key, bitmap);
 		}
 	}
 
 	public Bitmap loadFromResource(Resources res, int resId, int width, int height) {
-
 		Bitmap bmp = mCache.get(String.valueOf(resId));
 		if (bmp != null) {
 			return bmp;
@@ -86,6 +92,23 @@ public class WYImageCache {
 	}
 	*/
 
+	/** load image from url */
+	public Bitmap loadFromUrl(String url) {
+		Bitmap bmp = mCache.get(url);
+
+		if (bmp == null) {
+			try {
+				bmp = BitmapFactory.decodeStream(new URL(url).openStream());
+			} catch (Exception e) {
+				Log.e("mylog", "ImageCache->loadFromUrlNoFile: error -> " + e.getMessage());
+				return null;
+			}
+			put(url, bmp);
+		}
+		return bmp;
+	}
+
+	/** load image from url and set to a given size */
 	public Bitmap loadFromUrl(String url, int width, int height) {
 		Bitmap bmp = mCache.get(url);
 
@@ -98,7 +121,6 @@ public class WYImageCache {
 			}
 			put(url, bmp);
 		}
-
 		return bmp;
 	}
 }

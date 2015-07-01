@@ -31,14 +31,26 @@ public class WYAction extends RelativeLayout {
 		init();
 		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.WYAction);
 
-		String title = ta.getString(R.styleable.WYAction_wy_action_title);
-		int color = ta.getColor(R.styleable.WYAction_wy_action_title_color, Color.WHITE);
-		boolean _visible = ta.getBoolean(R.styleable.WYAction_wy_action_left_visible, false);
+		String  title    = ta.getString(R.styleable.WYAction_wy_action_title);
+		int     color    = ta.getColor(R.styleable.WYAction_wy_action_title_color, -1);
+		boolean _visible = ta.getBoolean(R.styleable.WYAction_wy_action_left_visible, true);
+		String  theme    = ta.getString(R.styleable.WYAction_wy_action_theme);
 
 		ta.recycle();
 
-		if (!isInEditMode()){
-			vTitle.setTextColor(color);
+		if (!isInEditMode()) {
+			if (theme != null) {
+				if(theme.equals("1")) {
+					vTitle.setTextColor(context.getResources().getColor(android.R.color.background_dark));
+					setBackgroundColor(Color.parseColor("#F0EFEE"));
+					vBack.setImageResource(R.mipmap.ic_arrow_back_grey600_24dp);
+				} else {
+					vTitle.setTextColor(context.getResources().getColor(android.R.color.background_light));
+					setBackgroundColor(context.getResources().getColor(android.R.color.background_dark));
+				}
+			}
+
+			if (color != -1) vTitle.setTextColor(color);
 			vTitle.setText(title);
 
 			if (!_visible) {
@@ -47,6 +59,8 @@ public class WYAction extends RelativeLayout {
 				lp.addRule(CENTER_IN_PARENT);
 				vTitle.setLayoutParams(lp);
 			}
+
+
 		}
 	}
 
@@ -64,8 +78,13 @@ public class WYAction extends RelativeLayout {
 		vTitle.setText(text);
 	}
 
-	public void setLeft(int visible, OnClickListener listener) {
-		vBack.setVisibility(visible);
+	public void setViewLeft(int resId) {
+		vBack.setImageResource(resId);
+	}
+
+	public void setViewLeft(int resId, OnClickListener listener) {
+		vBack.setImageResource(resId);
 		vBack.setOnClickListener(listener);
 	}
+
 }

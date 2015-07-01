@@ -31,7 +31,7 @@ public class WYHttp {
 	public static String send(String path, Map<String, String> params, Map<String, String> files) {
 
 		if (files == null) {
-			return sendPost(path, files);
+			return post(path, files);
 		} else {
 			return uploadFile(path, params, files);
 		}
@@ -39,7 +39,7 @@ public class WYHttp {
 
 
 	/** 以指定路径和参数发送post请求, 参数可以为null. */
-	public static String sendPost(String path, Map<String, String> params) {
+	public static String post(String path, Map<String, String> params) {
 
 		ArrayList<NameValuePair> list = null;
 		if (params != null) {
@@ -137,12 +137,25 @@ public class WYHttp {
 			return null;
 		}
 		return file;
-	}/** 从网络下载图片. */
+	}
+
+	/** 从网络下载图片. */
 	public static Bitmap loadImage(String url, int width, int height) {
 		Bitmap bmp = null;
 		try {
 			URL imgUrl = new URL(url);
 			bmp = WYBitmap.decodeSampledBitmapFromUrl(imgUrl, width, height);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bmp;
+	}
+
+	public static Bitmap loadImage(String url) {
+		Bitmap bmp = null;
+		try {
+			URL imgUrl = new URL(url);
+			bmp = BitmapFactory.decodeStream(imgUrl.openStream());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

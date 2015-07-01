@@ -1,9 +1,9 @@
 package weiy.app.basic.tools;
 
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.ImageView;
+
+import com.badoo.mobile.util.WeakHandler;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,8 +11,14 @@ import java.util.concurrent.Executors;
 /** Created by kukiss on 2015/1/16 0016. */
 public class WYImageLoader {
 
-	WYImageCache    mCache;
-	ExecutorService mThreads;
+	private WYImageCache    mCache;
+	private ExecutorService mThreads;
+
+	public WYImageLoader(int threadCount) {
+
+		mCache = new WYImageCache();
+		mThreads = Executors.newFixedThreadPool(threadCount);
+	}
 
 	public WYImageLoader(String dir) {
 
@@ -22,21 +28,25 @@ public class WYImageLoader {
 
 	public void loadImage(final String url, final int width, final int height, final ImageView view) {
 
-		final Handler handler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-
-				if (msg.obj != null) view.setImageBitmap((Bitmap) msg.obj);
-			}
-		};
+		final WeakHandler handler = new WeakHandler();
 
 		mThreads.execute(new Runnable() {
 			@Override
 			public void run() {
 
-				Bitmap bmp = mCache.loadFromUrl(url, width, height);
-				handler.obtainMessage(100, bmp).sendToTarget();
+				final Bitmap bmp = mCache.loadFromUrl(url, width, height);
+				if (bmp != null) {
+					handler.post(new Runnable() {
+						@Override public void run() {
+							view.setImageBitmap(bmp);
+						}
+					});
+				}
 			}
 		});
+	}
+
+	public void loadImage(final String url) {
+		mCache.loadFromUrl(url);
 	}
 }

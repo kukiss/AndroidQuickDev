@@ -11,7 +11,15 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -102,6 +110,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		}.start();
 		// 保存日志文件
 		saveCatchInfo2File(ex);
+		uploadError(ex);
 		return true;
 	}
 
@@ -143,7 +152,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			sb.append(key).append("=").append(value).append("\n");
 		}
 
-		Writer writer = new StringWriter();
+		Writer      writer      = new StringWriter();
 		PrintWriter printWriter = new PrintWriter(writer);
 		ex.printStackTrace(printWriter);
 		Throwable cause = ex.getCause();
@@ -154,6 +163,18 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		printWriter.close();
 		String result = writer.toString();
 		sb.append(result);
+
+		// show error log in terminal
+		Log.e("mylog", sb.toString());
+
+		//upload to server
+		new Thread() {
+			@Override public void run() {
+
+			}
+		}.start();
+
+		/* save to file
 		try {
 			String time = formatter.format(new Date());
 			String fileName = "crash-" + time + ".log";
@@ -166,19 +187,24 @@ public class CrashHandler implements UncaughtExceptionHandler {
 				FileOutputStream fos = new FileOutputStream(path + fileName);
 				fos.write(sb.toString().getBytes());
 				// 发送给开发人员
-				sendCrashLog2PM(getApplicationName(mContext), fileName, path + fileName);
+				// sendCrashLog2PM(getApplicationName(mContext), fileName, path + fileName);
 				fos.close();
 			}
 			return fileName;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
 		return null;
+	}
+
+	private void uploadError(Throwable ex) {
+
 	}
 
 	public String getApplicationName(Context c) {
 
-		PackageManager packageManager = null;
+		PackageManager  packageManager = null;
 		ApplicationInfo applicationInfo;
 		try {
 			packageManager = c.getApplicationContext().getPackageManager();
@@ -199,9 +225,9 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			Toast.makeText(mContext, "日志文件不存在！", Toast.LENGTH_SHORT).show();
 			return;
 		}
-		FileInputStream fis = null;
-		BufferedReader reader = null;
-		String s;
+		FileInputStream fis    = null;
+		BufferedReader  reader = null;
+		String          s;
 		try {
 			fis = new FileInputStream(dir);
 			reader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
@@ -209,7 +235,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
 				s = reader.readLine();
 				if (s == null) break;
 				// 由于目前尚未确定以何种方式发送，所以先打出log日志。
-				postLog(appName, fileName, dir);
 				Log.e("mylog", s);
 			}
 		} catch (IOException e) {
@@ -223,9 +248,5 @@ public class CrashHandler implements UncaughtExceptionHandler {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public void postLog(String appName, String fileName, String dir) {
-		// 上传错误日志.
 	}
 }

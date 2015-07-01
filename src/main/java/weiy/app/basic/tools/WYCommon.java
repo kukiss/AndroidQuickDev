@@ -40,6 +40,7 @@ import java.util.Map;
 
 import weiy.app.basic.dialogs.DatePickDialog;
 import weiy.app.basic.dialogs.TimePickDialog;
+import weiy.app.basic.myclass.Size;
 
 public class WYCommon {
 
@@ -322,7 +323,7 @@ public class WYCommon {
 	public static void openUrl(Context context, String url) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(url));
-		context.startActivity(intent);
+		if (context.getPackageManager().queryIntentActivities(intent, 0).size() > 0) context.startActivity(intent);
 	}
 
 	public static void toggleMobileData(Context context, boolean state) {
@@ -353,6 +354,15 @@ public class WYCommon {
 		} else {
 			return null;
 		}
+	}
+
+	private Size measureSize(View view) {
+		int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+		int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+		view.measure(w, h);
+		int height = view.getMeasuredHeight();
+		int width  = view.getMeasuredWidth();
+		return new Size(width, height);
 	}
 
 }

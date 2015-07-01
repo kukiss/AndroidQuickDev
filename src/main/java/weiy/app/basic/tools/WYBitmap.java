@@ -1,11 +1,22 @@
 package weiy.app.basic.tools;
 
 import android.content.res.Resources;
-import android.graphics.*;
+import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 
 public class WYBitmap {
@@ -15,10 +26,10 @@ public class WYBitmap {
 		Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(output);
 
-		final int color = 0xff424242;
-		final Paint paint = new Paint();
-		final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-		final RectF rectF = new RectF(rect);
+		final int   color   = 0xff424242;
+		final Paint paint   = new Paint();
+		final Rect  rect    = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		final RectF rectF   = new RectF(rect);
 		final float roundPx = pixels;
 
 		paint.setAntiAlias(true);
@@ -73,7 +84,7 @@ public class WYBitmap {
 			h = t;
 		}
 		// 计算缩放比例
-		float scaleWidth = ((float) width) / w;
+		float scaleWidth  = ((float) width) / w;
 		float scaleHeight = ((float) height) / h;
 		// 取得想要缩放的matrix参数
 		Matrix matrix = new Matrix();
@@ -98,16 +109,23 @@ public class WYBitmap {
 	/** 计算缩放比例. */
 	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
 		// 源图片的高度和宽度
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
+		final int height       = options.outHeight;
+		final int width        = options.outWidth;
+		int       inSampleSize = 1;
 		if (height > reqHeight || width > reqWidth) {
 			// 计算出实际宽高和目标宽高的比率
 			final int heightRatio = Math.round((float) height / (float) reqHeight);
 			final int widthRatio = Math.round((float) width / (float) reqWidth);
 			// 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
 			// 一定都会大于等于目标的宽和高。
-			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+			double wr = (double) width / reqWidth;
+			double hr = (double) height / reqHeight;
+			double ratio = Math.min(wr, hr);
+			float n = 1.0f;
+			while ((n * 2) <= ratio) {
+				n *= 2;
+			}
+			inSampleSize = (int) n;
 		}
 		return inSampleSize;
 	}
