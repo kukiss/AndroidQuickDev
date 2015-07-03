@@ -47,6 +47,10 @@ public class WYImageLoader {
 	}
 
 	public void loadImage(final String url) {
-		mCache.loadFromUrl(url);
+		mThreads.execute(new Runnable() {
+			@Override public void run() {
+				mCache.loadFromUrl(url);
+			}
+		});
 	}
 }

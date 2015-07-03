@@ -7,6 +7,7 @@ import android.util.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
@@ -37,13 +38,35 @@ public class WYHttp {
 		}
 	}
 
+	/** 以指定路径和参数发送post请求, 参数可以为null. */
+	public static String get(String path) {
+
+		ArrayList<NameValuePair> list = null;
+
+		HttpGet get = new HttpGet(path);
+		DefaultHttpClient client = new DefaultHttpClient();
+		HttpParams httpParams = client.getParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, 5000); // 设置网络超时
+
+		// 设置post请求的参数.
+		try {
+			HttpResponse response = client.execute(get);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				return EntityUtils.toString(response.getEntity());
+			}
+		} catch (Exception e) {
+			Log.e("mylog", e.getMessage());
+		}
+		return "";
+	}
+
 
 	/** 以指定路径和参数发送post请求, 参数可以为null. */
 	public static String post(String path, Map<String, String> params) {
 
 		ArrayList<NameValuePair> list = null;
 		if (params != null) {
-			list = new ArrayList<NameValuePair>();
+			list = new ArrayList<>();
 			for (Map.Entry<String, String> entry : params.entrySet()) {
 				list.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
 			}
@@ -83,8 +106,10 @@ public class WYHttp {
 					entity.addPart(entry.getKey(), new StringBody(entry.getValue(), Charset.forName("UTF-8")));
 				}
 			}
-			for (Map.Entry<String, byte[]> entry : files.entrySet()) {
-				entity.addPart(entry.getKey(), new ByteArrayBody(entry.getValue(), ""));
+			if (files !=null) {
+				for (Map.Entry<String, byte[]> entry : files.entrySet()) {
+					entity.addPart(entry.getKey(), new ByteArrayBody(entry.getValue(), ""));
+				}
 			}
 			httpPost.setEntity(entity);
 			HttpResponse response = client.execute(httpPost);
@@ -99,7 +124,6 @@ public class WYHttp {
 
 	/** 以指定的路径和参数以及文件上传文件, 参数可以为null. */
 	public static String uploadFile(String path, Map<String, String> params, Map<String, String> files) {
-
 		HttpPost httpPost = new HttpPost(path);
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpParams httpParams = client.getParams();

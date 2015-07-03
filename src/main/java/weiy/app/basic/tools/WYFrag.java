@@ -13,7 +13,9 @@ public class WYFrag {
 	/** 显示一个DialogFragment, 会预先删除已显示得到DialogFragment. */
 	public static void showDialog(FragmentManager manager, DialogFragment fragment) {
 		dismissDialog(manager);
-		fragment.show(manager, "dialog");
+		try {
+			fragment.show(manager, "dialog");
+		} catch (Exception ignore) {}
 	}
 
 	/** 取消显示的dialog */
@@ -22,20 +24,21 @@ public class WYFrag {
 		if (f != null) {
 			FragmentTransaction t = manager.beginTransaction();
 			t.remove(f);
-			t.commit();
+			t.commitAllowingStateLoss();
 		}
 	}
 
 	/** 显示一个v4.DialogFragment, 会预先删除已显示的DialogFragment. */
 	public static void showDialog(android.support.v4.app.FragmentManager manager, android.support.v4.app.DialogFragment fragment) {
-		dismissDialog(manager);
-		fragment.show(manager, "dialog");
+		showDialog(manager, fragment, true);
 	}
 
 	/** 显示一个v4.DialogFragment, 选择是否删除已显示的DialogFragment. */
 	public static void showDialog(android.support.v4.app.FragmentManager manager, android.support.v4.app.DialogFragment fragment, boolean dismissLast) {
 		if (dismissLast) dismissDialog(manager);
-		fragment.show(manager, "dialog");
+		try {
+			fragment.show(manager, "dialog");
+		} catch (Exception ignore) {}
 	}
 
 	/** 取消显示的v4.dialog */
@@ -44,7 +47,7 @@ public class WYFrag {
 		if (f != null) {
 			android.support.v4.app.FragmentTransaction t = manager.beginTransaction();
 			t.remove(f);
-			t.commit();
+			t.commitAllowingStateLoss();
 		}
 	}
 
@@ -64,7 +67,7 @@ public class WYFrag {
 		if (tag != null) {
 			t.addToBackStack(tag);
 		}
-		t.commit();
+		t.commitAllowingStateLoss();
 	}
 
 	/** 替换一个容器中的v4.Fragment, 设置是否加入回退栈 */
@@ -88,7 +91,7 @@ public class WYFrag {
 		if (tag != null) {
 			t.addToBackStack(tag);
 		}
-		t.commit();
+		t.commitAllowingStateLoss();
 	}
 
 	/** 增加一个fragment, 不销毁上一个fragment的视图 */
@@ -99,7 +102,7 @@ public class WYFrag {
 		if (back != null) {
 			t.addToBackStack(back);
 		}
-		t.commit();
+		t.commitAllowingStateLoss();
 	}
 
 }
