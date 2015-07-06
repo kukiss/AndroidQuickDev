@@ -31,7 +31,8 @@ public class WYAction extends RelativeLayout {
 		init();
 		TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.WYAction);
 
-		String  title    = ta.getString(R.styleable.WYAction_wy_action_title);
+		int     titleId  = ta.getResourceId(R.styleable.WYAction_wy_action_title, -1);
+		String  title    = titleId > 0 ? (String) ta.getResources().getText(titleId) : ta.getString(R.styleable.WYAction_wy_action_title);
 		int     color    = ta.getColor(R.styleable.WYAction_wy_action_title_color, -1);
 		boolean _visible = ta.getBoolean(R.styleable.WYAction_wy_action_left_visible, true);
 		String  theme    = ta.getString(R.styleable.WYAction_wy_action_theme);
@@ -40,7 +41,7 @@ public class WYAction extends RelativeLayout {
 
 		if (!isInEditMode()) {
 			if (theme != null) {
-				if(theme.equals("1")) {
+				if (theme.equals("1")) {
 					vTitle.setTextColor(context.getResources().getColor(android.R.color.background_dark));
 					setBackgroundColor(Color.parseColor("#F0EFEE"));
 					vBack.setImageResource(R.mipmap.ic_arrow_back_grey600_24dp);
