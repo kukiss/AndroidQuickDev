@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -65,6 +66,9 @@ public class WYListRefreshView extends RelativeLayout {
 
 	public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
 		vList.setOnItemClickListener(listener);
+	}
+	public void setOnScrollListener(AbsListView.OnScrollListener listener) {
+		vList.setOnScrollListener(listener);
 	}
 
 	public interface Callback {

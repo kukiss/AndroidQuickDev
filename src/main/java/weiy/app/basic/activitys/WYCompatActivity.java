@@ -14,10 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import weiy.app.basic.R;
+import weiy.app.basic.views.WYAction;
 
 public abstract class WYCompatActivity extends AppCompatActivity implements OnClickListener {
 
@@ -44,6 +47,19 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 		findViews();
 		ButterKnife.inject(this);
 		mRes = getApplicationContext().getResources();
+
+		// for WYAction's back button
+		WYAction action = (WYAction) findViewById(R.id.wy_action_bar);
+		if (action != null) {
+			ImageView func = (ImageView) action.findViewById(R.id.back);
+			func.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					onBackPressed();
+				}
+			});
+		}
+
 		doCreate(savedInstanceState);
 	}
 
