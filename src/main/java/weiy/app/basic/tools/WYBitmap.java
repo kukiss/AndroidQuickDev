@@ -113,20 +113,18 @@ public class WYBitmap {
 		final int width        = options.outWidth;
 		int       inSampleSize = 1;
 		if (height > reqHeight || width > reqWidth) {
-			// 计算出实际宽高和目标宽高的比率
-			final int heightRatio = Math.round((float) height / (float) reqHeight);
-			final int widthRatio = Math.round((float) width / (float) reqWidth);
-			// 选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高
-			// 一定都会大于等于目标的宽和高。
-			double wr = (double) width / reqWidth;
-			double hr = (double) height / reqHeight;
-			double ratio = Math.min(wr, hr);
-			float n = 1.0f;
-			while ((n * 2) <= ratio) {
-				n *= 2;
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
 			}
-			inSampleSize = (int) n;
 		}
+
 		return inSampleSize;
 	}
 

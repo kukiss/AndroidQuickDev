@@ -2,6 +2,7 @@ package weiy.app.basic.tools;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -150,7 +151,7 @@ public class WYHttp {
 	}
 
 	/** 从网络下载图片. */
-	public static File uploadImage(String url, String path, int width, int height) {
+	public static File uploadImage(@NonNull String url, String path, int width, int height) {
 
 		File file = null;
 		try {
@@ -164,7 +165,7 @@ public class WYHttp {
 	}
 
 	/** 从网络下载图片. */
-	public static Bitmap loadImage(String url, int width, int height) {
+	public static Bitmap loadImage(@NonNull String url, int width, int height) {
 		Bitmap bmp = null;
 		try {
 			URL imgUrl = new URL(url);
@@ -175,7 +176,7 @@ public class WYHttp {
 		return bmp;
 	}
 
-	public static Bitmap loadImage(String url) {
+	public static Bitmap loadImage(@NonNull String url) {
 		Bitmap bmp = null;
 		try {
 			URL imgUrl = new URL(url);
