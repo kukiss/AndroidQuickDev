@@ -43,7 +43,7 @@ public abstract class WYCompatActivity extends AppCompatActivity implements OnCl
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		doFirst();
-		setContentView(mContentView);
+		if (mContentView != 0) setContentView(mContentView);
 		findViews();
 		ButterKnife.inject(this);
 		mRes = getApplicationContext().getResources();

@@ -169,7 +169,7 @@ public abstract class WYFragment<T> extends Fragment implements OnClickListener 
 		mHandler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
-				if (!isVisible()) doHandle(msg);
+				if (isVisible()) doHandle(msg);
 			}
 		};
 	}
