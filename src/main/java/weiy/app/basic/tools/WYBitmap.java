@@ -74,6 +74,24 @@ public class WYBitmap {
 		return file;
 	}
 
+	public static Bitmap zoomImage(Bitmap bgimage, double newWidth, double newHeight) {
+		// 获取这个图片的宽和高
+		float width  = bgimage.getWidth();
+		float height = bgimage.getHeight();
+
+		// 创建操作图片用的matrix对象
+		Matrix matrix = new Matrix();
+		// 计算宽高缩放率
+		float scaleWidth  = ((float) (width > height ? newWidth : newHeight)) / width;
+		float scaleHeight = ((float) (width > height ? newHeight : newWidth)) / height;
+		float scale       = scaleWidth < scaleHeight ? scaleWidth : scaleHeight;
+		// 缩放图片动作
+		matrix.postScale(scale, scale);
+		Bitmap bitmap = Bitmap.createBitmap(bgimage, 0, 0, (int) width, (int) height, matrix, true);
+		return bitmap;
+	}
+
+
 	/** 设置bitmap大小. */
 	public static Bitmap resizeBitmap(Bitmap bitmap, int width, int height) {
 		int w = bitmap.getWidth();

@@ -22,6 +22,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -44,9 +46,9 @@ public class WYHttp {
 
 		ArrayList<NameValuePair> list = null;
 
-		HttpGet get = new HttpGet(path);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpParams httpParams = client.getParams();
+		HttpGet           get        = new HttpGet(path);
+		DefaultHttpClient client     = new DefaultHttpClient();
+		HttpParams        httpParams = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 5000); // 设置网络超时
 
 		// 设置post请求的参数.
@@ -73,9 +75,9 @@ public class WYHttp {
 			}
 		}
 
-		HttpPost post = new HttpPost(path);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpParams httpParams = client.getParams();
+		HttpPost          post       = new HttpPost(path);
+		DefaultHttpClient client     = new DefaultHttpClient();
+		HttpParams        httpParams = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 5000); // 设置网络超时
 
 		// 设置post请求的参数.
@@ -96,9 +98,9 @@ public class WYHttp {
 
 	/** 以指定的路径和参数以及文件上传文件, 参数可以为null. */
 	public static String uploadBytes(String path, Map<String, String> params, Map<String, byte[]> files) {
-		HttpPost httpPost = new HttpPost(path);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpParams httpParams = client.getParams();
+		HttpPost          httpPost   = new HttpPost(path);
+		DefaultHttpClient client     = new DefaultHttpClient();
+		HttpParams        httpParams = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 5000); // 设置网络超时.
 		MultipartEntity entity = new MultipartEntity();
 		try {
@@ -107,7 +109,7 @@ public class WYHttp {
 					entity.addPart(entry.getKey(), new StringBody(entry.getValue(), Charset.forName("UTF-8")));
 				}
 			}
-			if (files !=null) {
+			if (files != null) {
 				for (Map.Entry<String, byte[]> entry : files.entrySet()) {
 					entity.addPart(entry.getKey(), new ByteArrayBody(entry.getValue(), ""));
 				}
@@ -125,9 +127,9 @@ public class WYHttp {
 
 	/** 以指定的路径和参数以及文件上传文件, 参数可以为null. */
 	public static String uploadFile(String path, Map<String, String> params, Map<String, String> files) {
-		HttpPost httpPost = new HttpPost(path);
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpParams httpParams = client.getParams();
+		HttpPost          httpPost   = new HttpPost(path);
+		DefaultHttpClient client     = new DefaultHttpClient();
+		HttpParams        httpParams = client.getParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, 5000); // 设置网络超时.
 		MultipartEntity entity = new MultipartEntity();
 		try {
@@ -165,7 +167,7 @@ public class WYHttp {
 	}
 
 	/** 从网络下载图片. */
-	public static Bitmap loadImage(@NonNull String url, int width, int height) {
+	@Deprecated public static Bitmap loadImage(@NonNull String url, int width, int height) {
 		Bitmap bmp = null;
 		try {
 			URL imgUrl = new URL(url);
@@ -185,5 +187,26 @@ public class WYHttp {
 			e.printStackTrace();
 		}
 		return bmp;
+	}
+
+	/** download file from net */
+	public static File download(File file, @NonNull String url) {
+		FileOutputStream fos;
+		try {
+			URL fileUrl = new URL(url);
+			InputStream is = fileUrl.openStream();
+			fos = new FileOutputStream(file);
+			byte[] bytes = new byte[2048];
+			int len;
+			while ((len = is.read(bytes)) != -1) {
+				fos.write(bytes, 0, len);
+			}
+			is.close();
+			fos.close();
+		} catch (Exception e) {
+			file = null;
+			e.printStackTrace();
+		}
+		return file;
 	}
 }

@@ -92,4 +92,25 @@ public class WYJson {
 		}
 		return map;
 	}
+
+	public static WYList<WYMap<String, String>> jsonArrayToArray(JSONArray array) {
+		WYList<WYMap<String, String>> list;
+		try {
+			list = new WYList<>();
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject obj = array.getJSONObject(i);
+				WYMap<String, String> map = new WYMap<>();
+				Iterator<String> it = obj.keys();
+				while (it.hasNext()) {
+					String key = it.next();
+					map.put(key, obj.getString(key));
+				}
+				list.add(map);
+			}
+		} catch (Exception e) {
+			list = null;
+		}
+
+		return list;
+	}
 }

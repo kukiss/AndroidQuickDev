@@ -60,7 +60,7 @@ public class WYFile {
 		FileOutputStream stream = null;
 		try {
 			stream = new FileOutputStream(openFile(path));
-			bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+			bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		} catch (Exception e) {
 			return null;
 		} finally {
