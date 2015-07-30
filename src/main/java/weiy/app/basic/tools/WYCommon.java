@@ -58,7 +58,7 @@ public class WYCommon {
 		if (isNetworkAvailable(context)) {
 			return true;
 		} else {
-			Toast.makeText(context, "网络无法连接, 请检查网络设置.", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "网络连接失败, 请检查网络设置!", Toast.LENGTH_SHORT).show();
 			return false;
 		}
 	}

@@ -25,27 +25,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class WYHttp {
 
-	@Deprecated
-	public static String send(String path, Map<String, String> params, Map<String, String> files) {
-
-		if (files == null) {
-			return post(path, files);
-		} else {
-			return uploadFile(path, params, files);
-		}
-	}
-
 	/** 以指定路径和参数发送post请求, 参数可以为null. */
 	public static String get(String path) {
-
-		ArrayList<NameValuePair> list = null;
-
 		HttpGet           get        = new HttpGet(path);
 		DefaultHttpClient client     = new DefaultHttpClient();
 		HttpParams        httpParams = client.getParams();
@@ -66,7 +54,6 @@ public class WYHttp {
 
 	/** 以指定路径和参数发送post请求, 参数可以为null. */
 	public static String post(String path, Map<String, String> params) {
-
 		ArrayList<NameValuePair> list = null;
 		if (params != null) {
 			list = new ArrayList<>();
@@ -154,7 +141,6 @@ public class WYHttp {
 
 	/** 从网络下载图片. */
 	public static File uploadImage(@NonNull String url, String path, int width, int height) {
-
 		File file = null;
 		try {
 			URL imgUrl = new URL(url);
@@ -193,7 +179,7 @@ public class WYHttp {
 	public static File download(File file, @NonNull String url) {
 		FileOutputStream fos;
 		try {
-			URL fileUrl = new URL(url);
+			URL fileUrl = new URL(URLEncoder.encode(url, "utf-8").replace("%2F", "/").replace("%3A", ":"));
 			InputStream is = fileUrl.openStream();
 			fos = new FileOutputStream(file);
 			byte[] bytes = new byte[2048];
