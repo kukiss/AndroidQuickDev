@@ -43,6 +43,11 @@ public class WYHelp {
 		else return def;
 	}
 
+	public static double parseDouble(String str, double def) {
+		if (isFloat(str)) return Double.parseDouble(str);
+		else return def;
+	}
+
 	/*
 	public static String getString(String str, String[] tar, String replace) {
 		if (str == null) {
