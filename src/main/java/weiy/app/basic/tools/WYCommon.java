@@ -131,18 +131,9 @@ public class WYCommon {
 		return bigInt.toString(16);
 	}
 
-	public static Map<String, Object> getApkInfo(String apkFile, Context context) {
+	public static PackageInfo getApkInfo(String apkFile, Context context) {
 		PackageManager packageManager = context.getPackageManager();
-		PackageInfo    packageInfo    = packageManager.getPackageArchiveInfo(apkFile, PackageManager.GET_ACTIVITIES);
-		if (packageInfo != null) {
-			HashMap<String, Object> map = new HashMap<String, Object>(4);
-			map.put("name", packageInfo.packageName);
-			map.put("uid", packageInfo.sharedUserId);
-			map.put("vname", packageInfo.versionName);
-			map.put("vcode", packageInfo.versionCode);
-			return map;
-		}
-		return null;
+		return packageManager.getPackageArchiveInfo(apkFile, PackageManager.GET_ACTIVITIES);
 	}
 
 	/** dip px互转 */
@@ -154,6 +145,11 @@ public class WYCommon {
 	public static int dip2px(Context context, float dipValue) {
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (dipValue * scale + 0.5f);
+	}
+
+	public static int sp2px(Context context, float spValue) {
+		final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+		return (int) (spValue * fontScale + 0.5f);
 	}
 
 	/** 检查输入框是否为空 */
